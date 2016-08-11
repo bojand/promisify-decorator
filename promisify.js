@@ -8,9 +8,8 @@ function promisify(...args) {
 }
 
 function promisifyClass(target) {
-  // (Using reflect to get all keys including symbols)
   let keys;
-  // Use Reflect if exists
+  // Use Reflect if exists to get all keys including symbols
   if (typeof Reflect !== 'undefined' && typeof Reflect.ownKeys === 'function') {
     keys = Reflect.ownKeys(target.prototype);
   } else {
@@ -22,18 +21,16 @@ function promisifyClass(target) {
   }
 
   keys.forEach(key => {
-    // Ignore special case target method
     if (key === 'constructor') {
       return;
     }
 
     const descriptor = Object.getOwnPropertyDescriptor(target.prototype, key);
-
-    // Only methods need binding
     if (typeof descriptor.value === 'function') {
       Object.defineProperty(target.prototype, key, promisifyMethod(target, key, descriptor));
     }
   });
+
   return target;
 }
 
