@@ -1,0 +1,108 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>Promisify-decorator by bojand</title>
+
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/github-light.css">
+    <meta name="viewport" content="width=device-width">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div class="wrapper">
+      <header>
+        <h1>Promisify-decorator</h1>
+        <p>Promisify decorator</p>
+
+        <p class="view"><a href="https://github.com/bojand/promisify-decorator">View the Project on GitHub <small>bojand/promisify-decorator</small></a></p>
+
+
+        <ul>
+          <li><a href="https://github.com/bojand/promisify-decorator/zipball/master">Download <strong>ZIP File</strong></a></li>
+          <li><a href="https://github.com/bojand/promisify-decorator/tarball/master">Download <strong>TAR Ball</strong></a></li>
+          <li><a href="https://github.com/bojand/promisify-decorator">View On <strong>GitHub</strong></a></li>
+        </ul>
+      </header>
+      <section>
+        <h1>
+<a id="promisify-decorator" class="anchor" href="#promisify-decorator" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>promisify decorator</h1>
+
+<p>A class or method <a href="https://github.com/wycats/javascript-decorators">decorator</a> which uses <a href="https://github.com/bojand/promisify-call">promisify-call</a> to
+promisify methods so they can be called in either callback or promise style.</p>
+
+<p>As decorators are a part of future ES2016 standard they can only be used with transpilers such
+as <a href="http://babeljs.io">Babel</a>.</p>
+
+<h4>
+<a id="babel-6-usage" class="anchor" href="#babel-6-usage" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Babel 6 Usage</h4>
+
+<p>The implementation of the decorator transform is currently on hold as the syntax
+is not final. If you would like to use this project with Babel 6.0, you may use
+<a href="https://github.com/loganfsmyth/babel-plugin-transform-decorators-legacy">babel-plugin-transform-decorators-legacy</a>
+which implement Babel 5 decorator transform for Babel 6.</p>
+
+<h4>
+<a id="installation" class="anchor" href="#installation" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Installation</h4>
+
+<div class="highlight highlight-source-shell"><pre>npm install promisify-decorator</pre></div>
+
+<h4>
+<a id="usage" class="anchor" href="#usage" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Usage</h4>
+
+<p>Trivial example to read a file.</p>
+
+<div class="highlight highlight-source-js"><pre><span class="pl-k">import</span> <span class="pl-smi">fs</span> <span class="pl-k">from</span> <span class="pl-s"><span class="pl-pds">'</span>fs<span class="pl-pds">'</span></span>;
+<span class="pl-k">import</span> <span class="pl-smi">promisify</span> <span class="pl-k">from</span> <span class="pl-s"><span class="pl-pds">'</span>promisify-decorator<span class="pl-pds">'</span></span>;
+
+<span class="pl-k">export</span> <span class="pl-k">class</span> <span class="pl-en">FileReader</span> {
+  @promisify
+  <span class="pl-en">readFile</span>(<span class="pl-smi">path</span>, <span class="pl-smi">fn</span>) {
+    <span class="pl-k">return</span> <span class="pl-smi">fs</span>.<span class="pl-en">readFile</span>(path, <span class="pl-s"><span class="pl-pds">'</span>utf8<span class="pl-pds">'</span></span>, fn);
+  }
+}</pre></div>
+
+<p>From there we can use callback style:</p>
+
+<div class="highlight highlight-source-js"><pre><span class="pl-k">const</span> <span class="pl-c1">f</span> <span class="pl-k">=</span> <span class="pl-k">new</span> <span class="pl-en">FileReader</span>();
+<span class="pl-smi">f</span>.<span class="pl-en">readFile</span>(<span class="pl-s"><span class="pl-pds">'</span>./sample.txt<span class="pl-pds">'</span></span>, (<span class="pl-smi">err</span>, <span class="pl-smi">res</span>) <span class="pl-k">=&gt;</span> {
+  <span class="pl-en">console</span>.<span class="pl-c1">log</span>(res);
+});</pre></div>
+
+<p>Or we can use promises:</p>
+
+<div class="highlight highlight-source-js"><pre><span class="pl-k">const</span> <span class="pl-c1">f</span> <span class="pl-k">=</span> <span class="pl-k">new</span> <span class="pl-en">FileReader</span>();
+<span class="pl-k">const</span> <span class="pl-c1">res</span> <span class="pl-k">=</span> <span class="pl-k">await</span> <span class="pl-smi">f</span>.<span class="pl-en">readFile</span>(<span class="pl-s"><span class="pl-pds">'</span>./sample.txt<span class="pl-pds">'</span></span>);
+<span class="pl-en">console</span>.<span class="pl-c1">log</span>(res);</pre></div>
+
+<p>Similarly we can promisify a whole class including all of its methods:</p>
+
+<div class="highlight highlight-source-js"><pre><span class="pl-k">import</span> <span class="pl-smi">fs</span> <span class="pl-k">from</span> <span class="pl-s"><span class="pl-pds">'</span>fs<span class="pl-pds">'</span></span>;
+<span class="pl-k">import</span> <span class="pl-smi">promisify</span> <span class="pl-k">from</span> <span class="pl-s"><span class="pl-pds">'</span>promisify-decorator<span class="pl-pds">'</span></span>;
+
+@promisify
+<span class="pl-k">class</span> <span class="pl-en">FileReader</span> {
+  <span class="pl-en">readFile</span>(<span class="pl-smi">path</span>, <span class="pl-smi">fn</span>) {
+    <span class="pl-k">return</span> <span class="pl-smi">fs</span>.<span class="pl-en">readFile</span>(path, <span class="pl-s"><span class="pl-pds">'</span>utf8<span class="pl-pds">'</span></span>, fn);
+  }
+}</pre></div>
+
+<h3>
+<a id="license" class="anchor" href="#license" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>License</h3>
+
+<p>Copyright 2016 Bojan D.</p>
+
+<p>Licensed under the MIT License.</p>
+      </section>
+      <footer>
+        <p>This project is maintained by <a href="https://github.com/bojand">bojand</a></p>
+        <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></small></p>
+      </footer>
+    </div>
+    <script src="javascripts/scale.fix.js"></script>
+    
+  </body>
+</html>
