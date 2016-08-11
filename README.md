@@ -68,6 +68,6 @@ class FileReader {
 
 ### License
 
-Copyright 2015 Bojan D.
+Copyright 2016 Bojan D.
 
 Licensed under the MIT License.
