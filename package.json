@@ -1,6 +1,6 @@
 {
   "name": "promisify-decorator",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Promisify decorator",
   "main": "index.js",
   "scripts": {
