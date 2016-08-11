@@ -1,6 +1,6 @@
 # promisify decorator
 
-A class or method decorator which uses [promisify-call](https://github.com/bojand/promisify-call) to
+A class or method [decorator](https://github.com/wycats/javascript-decorators) which uses [promisify-call](https://github.com/bojand/promisify-call) to
 promisify methods so they can be called in either callback or promise style.
 
 As decorators are a part of future ES2016 standard they can only be used with transpilers such
